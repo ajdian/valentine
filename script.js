@@ -88,7 +88,7 @@ function handleClick(e) {
     }
 }
 
-// Inicializar lluvia de corazones
+// Inicializar lluvia de flores
 function initHeartRain() {
     const canvas = document.getElementById('heartCanvas');
     const ctx = canvas.getContext('2d');
@@ -102,70 +102,63 @@ function initHeartRain() {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
     
-    // Crear corazones
-    const heartCount = 50;
-    for (let i = 0; i < heartCount; i++) {
+    // Emojis para la lluvia (flores, corazones, estrellas)
+    const rainEmojis = ['🌸', '🌹', '🌷', '🌺', '💖', '💕', '💗', '❤️', '🌟', '✨'];
+    
+    // Crear elementos
+    const itemCount = 100;
+    // Reutilizamos la variable hearts como container
+    hearts = []; 
+    
+    for (let i = 0; i < itemCount; i++) {
         hearts.push({
             x: Math.random() * canvas.width,
             y: Math.random() * canvas.height,
-            size: Math.random() * 20 + 10,
-            speed: Math.random() * 3 + 1,
-            color: getRandomHeartColor(),
+            size: Math.random() * 20 + 20, // Un poco más grandes para que se vean bien
+            speed: Math.random() * 2 + 1,
+            text: rainEmojis[Math.floor(Math.random() * rainEmojis.length)],
             rotation: Math.random() * Math.PI * 2,
-            rotationSpeed: (Math.random() - 0.5) * 0.1
+            rotationSpeed: (Math.random() - 0.5) * 0.05
         });
     }
     
-    // Animar corazones
-    function animateHearts() {
+    // Animar flores
+    function animateFlowers() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         
-        hearts.forEach(heart => {
+        hearts.forEach(flower => {
             // Actualizar posición
-            heart.y += heart.speed;
-            heart.rotation += heart.rotationSpeed;
+            flower.y += flower.speed;
+            flower.rotation += flower.rotationSpeed;
             
             // Reiniciar si sale de la pantalla
-            if (heart.y > canvas.height) {
-                heart.y = -heart.size;
-                heart.x = Math.random() * canvas.width;
+            if (flower.y > canvas.height + 50) {
+                flower.y = -flower.size;
+                flower.x = Math.random() * canvas.width;
             }
             
-            // Dibujar corazón
-            drawHeart(ctx, heart.x, heart.y, heart.size, heart.color, heart.rotation);
+            // Dibujar flor
+            drawFlower(ctx, flower.x, flower.y, flower.size, flower.text, flower.rotation);
         });
         
         if (currentScreen === 'heartRain') {
-            animationFrameId = requestAnimationFrame(animateHearts);
+            animationFrameId = requestAnimationFrame(animateFlowers);
         }
     }
     
-    animateHearts();
+    animateFlowers();
 }
 
-// Dibujar corazón
-function drawHeart(ctx, x, y, size, color, rotation) {
+// Dibujar flor (emoji) en Canvas
+function drawFlower(ctx, x, y, size, text, rotation) {
     ctx.save();
     ctx.translate(x, y);
     ctx.rotate(rotation);
-    ctx.fillStyle = color;
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 2;
-    
-    ctx.beginPath();
-    ctx.moveTo(0, size * 0.3);
-    ctx.bezierCurveTo(-size * 0.5, -size * 0.3, -size, size * 0.2, 0, size);
-    ctx.bezierCurveTo(size, size * 0.2, size * 0.5, -size * 0.3, 0, size * 0.3);
-    ctx.fill();
-    ctx.stroke();
-    
+    ctx.font = `${size}px Arial`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(text, 0, 0);
     ctx.restore();
-}
-
-// Obtener color aleatorio de corazón
-function getRandomHeartColor() {
-    const colors = ['#ff6b9d', '#ff1744', '#e91e63', '#f06292', '#ec407a'];
-    return colors[Math.floor(Math.random() * colors.length)];
 }
 
 // Transición a la escena de Flores
