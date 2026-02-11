@@ -209,7 +209,7 @@ function animateFlowers() {
             item.style.fontSize = `${size}rem`;
             
             // Animación
-            const duration = Math.random() * 3 + 3; // Entre 3 y 6 segundos
+            const duration = Math.random() * 2 + 1.5; // Entre 1.5 y 3.5 segundos (Más rápido)
             item.style.animationName = 'floatAcross';
             item.style.animationDuration = `${duration}s`;
             
@@ -230,7 +230,7 @@ function animateFlowers() {
                 }
             });
             
-        }, i * 150); // Intervalo de aparición
+        }, i * 80); // Intervalo de aparición más rápido
     }
 }
 
